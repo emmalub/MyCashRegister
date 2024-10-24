@@ -37,46 +37,74 @@ namespace MyCashRegister.Products
         {
             Console.WriteLine("\n~~ Lägg till produkt ~~");
 
-            Console.Write("Ange produktens ID: ");
-            string productIDInput = (Console.ReadLine());
-            if (!InputValidator.Instance.ValidateInt(productIDInput, out int productID))
+            int productID = 0 ;
+            bool isUniqueID = false;
+
+            while (!isUniqueID)
             {
-                Console.WriteLine("Ogiltigt produktID. Ange ett heltal.");
-                return;
+                Console.Write("Ange produktens ID: ");
+                string productIDInput = Console.ReadLine();
+
+                if (!InputValidator.Instance.ValidateInt(productIDInput, out productID))
+                {
+                Console.WriteLine("Ogiltigt produktID, ange ett giltigt heltal.");
+                    continue;
+                }
+                if (Products.Any(p => p.PLU == productID))
+                {
+                    Console.WriteLine($"En produkt med samma ID {productID} finns redan. Välj ett annat.");
+                }
+                else
+                {
+                    isUniqueID = true;
+                }
+
             }
 
-            Console.Write("Ange produktens namn: ");
-            string nameInput = (Console.ReadLine());
-            if (!InputValidator.Instance.NonEmptyString(nameInput, out string name))
+            string name;
+            while (true)
             {
-                Console.WriteLine("Namnet får inte vara tomt");
-                return;
+                Console.Write("Ange produktens namn: ");
+                string nameInput = Console.ReadLine();
+                if (InputValidator.Instance.NonEmptyString(nameInput, out name))
+                {
+                    break;
+                }
+                Console.WriteLine("Namnet får inte vara tomt.");
             }
 
-            Console.Write("Ange produktens pris: ");
-            string priceInput = (Console.ReadLine());
-            if (InputValidator.Instance.ValidateDecimal(priceInput, out decimal price))
+            decimal price;
+            while (true)
             {
-                Console.WriteLine("Priset måste vara ett decimaltal, ex 10,00.");
-                return;
+                Console.Write("Ange produktens pris: ");
+                string priceInput = Console.ReadLine();
+                if (InputValidator.Instance.ValidateDecimal(priceInput, out price))
+                {
+                    break;
+                }
+                Console.WriteLine("Priset måste vara ett decimaltal, ex 10,00");
             }
 
             PriceType priceType;
-            Console.Write("Ange om priset gäller per kilo eller styck (KG för Kilo och ST för styck): ");
-            string inputPriceType = Console.ReadLine().ToUpper();
+            while (true)
+            {
+                Console.Write("Ange om priset gäller per kilo eller styck (KG för kilo och ST för styck)");
+                string inputPriceType = Console.ReadLine().ToUpper();
 
-            if (inputPriceType == "KG")
-            {
-                priceType = PriceType.PerKilo;
-            }
-            else if (inputPriceType == "ST")
-            {
-                priceType = PriceType.PerPiece;
-            }
-            else
-            {
-                Console.WriteLine("Ogiltigt alternativ, ange KG (för kilo) eller ST (för styck)");
-                return;
+                if (inputPriceType == "KG")
+                {
+                    priceType = PriceType.PerKilo;
+                    break;
+                }
+                else if (inputPriceType == "ST")
+                {
+                    priceType = PriceType.PerPiece;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt alternativ, ange KG (för kilo) eller ST (för styck).");
+                }
             }
 
             Product newProduct = new Product(productID, name, price, priceType);
@@ -88,23 +116,94 @@ namespace MyCashRegister.Products
 
             Admin admin = new Admin();
             admin.SaveProductToFile("../../../Files/products.txt", newProduct);
+
         }
+
+            //ADD METODEN INNAN JAG BÖRJADE PETA; HALVT FUNGERANDE
+            //
+            //Console.WriteLine("\n~~ Lägg till produkt ~~");
+
+            //Console.Write("Ange produktens ID: ");
+            //string productIDInput = (Console.ReadLine());
+            //if (!InputValidator.Instance.ValidateInt(productIDInput, out int productID))
+            //{
+            //    Console.WriteLine("Ogiltigt produktID. Ange ett heltal.");
+            //    return;
+            //}
+
+            //Console.Write("Ange produktens namn: ");
+            //string nameInput = (Console.ReadLine());
+            //if (!InputValidator.Instance.NonEmptyString(nameInput, out string name))
+            //{
+            //    Console.WriteLine("Namnet får inte vara tomt");
+            //    return;
+            //}
+
+            //Console.Write("Ange produktens pris: ");
+            //string priceInput = (Console.ReadLine());
+            //if (InputValidator.Instance.ValidateDecimal(priceInput, out decimal price))
+            //{
+            //    Console.WriteLine("Priset måste vara ett decimaltal, ex 10,00.");
+            //    return;
+            //}
+
+            //PriceType priceType;
+            //Console.Write("Ange om priset gäller per kilo eller styck (KG för Kilo och ST för styck): ");
+            //string inputPriceType = Console.ReadLine().ToUpper();
+
+            //if (inputPriceType == "KG")
+            //{
+            //    priceType = PriceType.PerKilo;
+            //}
+            //else if (inputPriceType == "ST")
+            //{
+            //    priceType = PriceType.PerPiece;
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Ogiltigt alternativ, ange KG (för kilo) eller ST (för styck)");
+            //    return;
+            //}
+
+            //Product newProduct = new Product(productID, name, price, priceType);
+            //Products.Add(newProduct);
+
+            //Console.WriteLine($"Produkt {name} har lagts till.");
+            //Console.WriteLine("Tryck ENTER för att återgå till menyn.");
+            //Console.ReadLine();
+
+            //Admin admin = new Admin();
+            //admin.SaveProductToFile("../../../Files/products.txt", newProduct);
+        
         public void Remove()
         {
+            ProductFileManager productFileManager = new ProductFileManager("../../../Files/products.txt");
+
+            List<Product> products = productFileManager.ReadProductsFromFile();
+
+            ProductDisplay display = new ProductDisplay(productFileManager);
+            display.DisplayProducts();
+
             Console.WriteLine("\n~~ Ta bort produkt ~~");
             Console.Write("Ange produktens namn: ");
-            string name = Console.ReadLine();
+            string name = Console.ReadLine().ToUpper().Trim();
 
-            Product productToRemove = Products.Find(p => p.Name.ToLower() == name.ToLower());
+            Product productToRemove = Products.Find(p => p.Name.Equals(name));
+
             if (productToRemove != null)
             {
                 Products.Remove(productToRemove);
                 Console.WriteLine($"Produkten {name} har tagits bort.");
+                productFileManager.SaveToFile("../../../Files/products.txt", Products);
+
             }
             else
             {
                 Console.WriteLine($"Produkten {name} finns inte.");
             }
+            Console.WriteLine("Tryck ENTER för att återgå till menyn.");
+            Console.ReadLine();
+
         }
         public void Edit()
         {
@@ -118,7 +217,7 @@ namespace MyCashRegister.Products
             display.DisplayProducts();
 
             Console.WriteLine("\n~~ Redigera produkt ~~");
-            Console.Write("Ange prodfuktens ID (PLU) för den produkt du vill redigera: ");
+            Console.Write("Ange produktens ID (PLU) för den produkt du vill redigera: ");
             int productID = int.Parse(Console.ReadLine());
 
             Product productToEdit = Products.Find(p => p.PLU == productID);
@@ -130,7 +229,7 @@ namespace MyCashRegister.Products
                 Console.ResetColor();
 
                 Console.Write("Ange ett nytt namn eller lämna tomt för att behålla nuvarande namn: ");
-                string newName = Console.ReadLine();
+                string newName = Console.ReadLine().ToUpper();
                 if (!string.IsNullOrEmpty(newName))
                 {
                     productToEdit.Name = newName;
@@ -144,13 +243,13 @@ namespace MyCashRegister.Products
                     productToEdit.Price = newPrice;
                 }
 
-                Console.WriteLine("Ändra typ av pris, ange S för styckpris och K för kilopris: ");
+                Console.Write("Ändra typ av pris, ange ST för styckpris och KG för kilopris: ");
                 string priceTypeInput = Console.ReadLine().ToUpper();
-                if (priceTypeInput == "S")
+                if (priceTypeInput == "ST")
                 {
                     productToEdit.PriceType = PriceType.PerKilo;
                 }
-                else if (priceTypeInput == "K")
+                else if (priceTypeInput == "KG")
                 {
                     productToEdit.PriceType = PriceType.PerKilo;
                 }

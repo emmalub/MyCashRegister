@@ -12,42 +12,48 @@ namespace MyCashRegister.Menus
     {
         public override void Display()
         {
-            PrintHeader("Adminvy");
-            Console.WriteLine($@"| 1. Lägg till produkt                    |
+            bool running = true;
+            while (running)
+            {
+                PrintHeader("Adminvy");
+                Console.WriteLine($@"| 1. Lägg till produkt                    |
 | 2. Ta bort produkt                      |
 | 3. Ändra produkt                        |
 | 0. Tillbaka                             |
 +-----------------------------------------+
 ");
-            string input = GetUserInput();
+                string input = GetUserInput();
 
-            Product product = new Product();
+                Product product = new Product();
 
-            switch (input)
-            {
-                case "1":
-                    product.Add();
-                    break;
+                switch (input)
+                {
+                    case "1":
+                        product.Add();
+                        break;
 
-                case "2":
-                    product.Remove();
-                    break;
+                    case "2":
+                        product.Remove();
+                        break;
 
-                case "3":
-                    product.Edit();
-                    break;
+                    case "3":
+                        product.Edit();
+                        break;
 
-                case "0":
-                    MainMenu mainMenu = new MainMenu();
-                    mainMenu.Display();
-                    break;
+                    case "0":
+                        MainMenu mainMenu = new MainMenu();
+                        mainMenu.Display();
+                        running = false;
+                        break;
 
-                default:
-                    InvalidInputMessage();
-                    break;
+                    default:
+                        InvalidInputMessage();
+                        break;
+                }
             }
         }
     }
 }
-    
+
+
 

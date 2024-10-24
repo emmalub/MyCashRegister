@@ -24,7 +24,7 @@ namespace MyCashRegister.Managers
             {
                 using (StreamWriter sw = new StreamWriter(filePath, true))
                 {
-                    sw.WriteLine($"{product.PLU};{product.Name.ToUpper()};{product.Price}:{product.PriceType}");
+                    sw.WriteLine($"{product.PLU};{product.Name.ToUpper()};{product.Price};{product.PriceType}");
                 }
                 Console.WriteLine($"Produkten {product.Name} sparades till {filePath}.");
             }

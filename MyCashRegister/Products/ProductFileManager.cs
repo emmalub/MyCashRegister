@@ -28,7 +28,7 @@ namespace MyCashRegister.Products
                     }
                 }
 
-                Console.WriteLine($"Produkten uppdaterats i filen.");
+                Console.WriteLine();
             }
             catch (Exception ex)
             {
@@ -37,7 +37,6 @@ namespace MyCashRegister.Products
         }
         public List<Product> ReadProductsFromFile()
         {
-            Console.WriteLine($"Kollar fil: {_filePath}");
 
             if (!File.Exists(_filePath))
             {
