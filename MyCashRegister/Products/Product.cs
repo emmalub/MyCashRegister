@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using MyCashRegister.Managers;
 
@@ -14,7 +15,7 @@ namespace MyCashRegister.Products
         public decimal Price { get; set; }
         public PriceType PriceType { get; set; }
 
-
+        
         private List<Product> Products { get; set; } = new List<Product>();
 
         public Product(int plu, string name, decimal price, PriceType priceType)
@@ -26,8 +27,10 @@ namespace MyCashRegister.Products
         }
         public Product()
         {
-            ProductFileManager fileManager = new ProductFileManager();  
-            Products = fileManager.LoadFromFile("../../../Files/products.txt");
+            string filePath = "../../../Files/products.txt";
+            ProductFileManager fileManager = new ProductFileManager(filePath);  
+            Products = fileManager.LoadFromFile(filePath);
+            Name = "unknown";
         }
 
         public void Add()
@@ -43,8 +46,8 @@ namespace MyCashRegister.Products
             }
 
             Console.Write("Ange produktens namn: ");
-            string name = Console.ReadLine();
-            if (!InputValidator.Instance.NonEmptyString(name))
+            string nameInput = (Console.ReadLine());
+            if (!InputValidator.Instance.NonEmptyString(nameInput, out string name))
             {
                 Console.WriteLine("Namnet får inte vara tomt");
                 return;
@@ -105,9 +108,13 @@ namespace MyCashRegister.Products
         }
         public void Edit()
         {
-            ProductFileManager fileManager = new ProductFileManager();
+            //ProductFileManager fileManager = new ProductFileManager();
 
-            ProductDisplay display = new ProductDisplay(Products);
+            ProductFileManager productFileManager = new ProductFileManager("../../../Files/products.txt");    
+            
+            List<Product> products = productFileManager.ReadProductsFromFile();
+            
+            ProductDisplay display = new ProductDisplay(productFileManager);
             display.DisplayProducts();
 
             Console.WriteLine("\n~~ Redigera produkt ~~");
@@ -145,7 +152,8 @@ namespace MyCashRegister.Products
                 {
                     productToEdit.PriceType = PriceType.PerKilo;
                 }
-                fileManager.SaveToFile("../../../Files/products.txt", Products);
+                // tog bort 24/10 efter att ha lagt till product repository längst upp i metoden
+                //fileManager.SaveToFile("../../../Files/products.txt", Products);
                 Console.WriteLine("Produkten har uppdaterats.");
             }
             else

@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyCashRegister.Campaigns;
 using MyCashRegister.Products;
 
 namespace MyCashRegister.Managers
 {
     public class Admin
     {
-        private CampaignFileManager _fileManager = new CampaignFileManager();
-        private string campaignFilePath = "../../../Files/campaigns.txt";
+        private string filePath = "../../../Files/products.txt";
 
         public void AddProduct()
         {

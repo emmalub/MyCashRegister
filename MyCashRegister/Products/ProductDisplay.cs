@@ -9,22 +9,23 @@ namespace MyCashRegister.Products
     public class ProductDisplay
     {
         //private List<Product> products;
-        private IProductRepository _productRepository;
-        private int _receiptNumber;
         private ProductFileManager _productFileManager;
+        private int _receiptNumber;
 
-        public ProductDisplay(IProductRepository productRepository)
+
+        public ProductDisplay(ProductFileManager productFileManager)
         {
-            _productRepository = productRepository;
+            _productFileManager = productFileManager;
         }
 
         public void DisplayProducts()
         {
+            List<Product> products = _productFileManager.ReadProductsFromFile();
+
             Console.Clear();
             Console.WriteLine("--------------------------");
             Console.WriteLine("- Tillgängliga Produkter -");
             Console.WriteLine("--------------------------");
-            var products = _productRepository.GetAll();
 
             foreach (var product in products)
             {

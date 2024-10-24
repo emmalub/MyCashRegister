@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -11,17 +12,18 @@ namespace MyCashRegister.Transactions
 {
     public class CashRegister
     {
-        private List<Product> products;
+        private List<Product> _products;
         private int _receiptNumber;
         private ProductFileManager _productFileManager;
 
-
-        //public CashRegister(string productFilePath)
         public CashRegister()
         {
-            var productFileManager = new ProductFileManager();
-            products = productFileManager.LoadFromFile("../../../Files/products.txt");
+            string filePath = "../../../Files/products.txt";
+            ProductFileManager productFileManager = new ProductFileManager(filePath);
+            _products = productFileManager.LoadFromFile(filePath);
             _receiptNumber = 1;
+
+            
         }
 
         public void StartTransaction()
@@ -44,7 +46,7 @@ namespace MyCashRegister.Transactions
                 if (inputParts.Length == 2 && int.TryParse(inputParts[0], out int plu)
                     && decimal.TryParse(inputParts[1], out decimal quantity))
                 {
-                    var product = products.FirstOrDefault(p => p.PLU == plu);
+                    var product = _products.FirstOrDefault(p => p.PLU == plu);
                     if (product != null)
                     {
                         transaction.AddProduct(product, quantity);
@@ -61,12 +63,21 @@ namespace MyCashRegister.Transactions
                 }
             }
         }
-public void Start()
-{
-    ProductDisplay display = new ProductDisplay(products);
-    display.DisplayProducts();
-    StartTransaction();
-}
+        public void Start()
+        {
+
+            ProductFileManager productFileManager = new ProductFileManager("../../../Files/products.txt");
+            List<Product> products = productFileManager.ReadProductsFromFile();
+
+            ProductDisplay display = new ProductDisplay(productFileManager);
+
+            display.DisplayProducts();
+            StartTransaction();
+        }
+    //public void SaveProducts()
+    //{
+    //    _productFileManager.SaveToFile("../../../Files/products.txt", _products);
+    //}
     }
 }
 

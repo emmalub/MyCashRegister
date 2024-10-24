@@ -113,7 +113,11 @@ namespace MyCashRegister.Transactions
         }
         public void CurrentCart()
         {
-            ProductDisplay display = new ProductDisplay(products);
+            ProductFileManager productFileManager = new ProductFileManager("../../../Files/products.txt");
+            List<Product> products = productFileManager.ReadProductsFromFile();
+
+            ProductDisplay display = new ProductDisplay(productFileManager);
+
             display.DisplayProducts();
             Console.WriteLine("\n        --- Varukorg ---");
             Console.WriteLine("---------------------------------");

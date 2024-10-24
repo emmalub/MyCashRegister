@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using MyCashRegister.Campaigns;
 using MyCashRegister.Managers;
 using MyCashRegister.Products;
 using System;

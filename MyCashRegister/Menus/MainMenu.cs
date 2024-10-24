@@ -12,6 +12,7 @@ namespace MyCashRegister.Menus
     {
         public override void Display()
         {
+
             PrintHeader("~~ Välkommen ~~~");
             Console.WriteLine($@"| 1. Ny kund                              |
 | 2. Admin-vy                             |

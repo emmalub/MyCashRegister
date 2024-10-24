@@ -25,16 +25,11 @@ namespace MyCashRegister.Managers
                 return _instance;
             }
         }
-        public static string NonEmptyString(string input)
+        public bool NonEmptyString(string input, out string validName)
         {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                throw new ArgumentException("Inmatningen kan inte vara tom.");
-            }
-            return input;
+            validName = input;
+            return !string.IsNullOrWhiteSpace(input);
         }
-
-
         public bool ValidateDecimal(string input, out decimal result)
         {
             return decimal.TryParse(input, out result);
