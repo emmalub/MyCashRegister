@@ -86,21 +86,16 @@ namespace MyCashRegister.Transactions
                     if (item.Product.PriceType == PriceType.PerKilo)
                     {
                         quantityInfo = $"{item.Quantity:F2} kg x {item.Product.Price:F2} kr/kg".PadRight(40);
-                        //priceDetails = $"{item.Quantity} kg x {price} kr/kg = {price:F2} kr";
-                        //sw.WriteLine($"{productName.PadRight(10)} {price:F2}");
-                        //sw.WriteLine($"{"".PadRight(10)} {priceDetails}");
+                        
                     }
                     else
                     {
                         quantityInfo = $"{item.Quantity:F0} st x {item.Product.Price:F2} kr/st".PadRight(40);
-                        //priceDetails = $"{(int)item.Quantity} x {price:F2} a' = {price:F2} kr";
-                        //sw.WriteLine($"{productName.PadRight(10)} {price:F2}");
-                        //sw.WriteLine($"{"".PadRight(10)} {priceDetails}");
+                        
                     }
                     sw.WriteLine($"{productName} {totalPrice.PadLeft(19)}");
                     sw.WriteLine(quantityInfo);
                 }
-
                 sw.WriteLine("                                           -------");
                 sw.WriteLine($"Att betala: {TotalAmount.ToString("F2").PadLeft(38)}");
                 sw.WriteLine($"Kontant: {TotalAmount.ToString("F2").PadLeft(41)}");
@@ -109,6 +104,7 @@ namespace MyCashRegister.Transactions
                 sw.WriteLine();
                 sw.Close();
             }
+            Console.SetCursorPosition(0, 20);
             Console.WriteLine($"Kvitto har skrivits till {fileName}");
         }
         public void CurrentCart()
@@ -117,14 +113,24 @@ namespace MyCashRegister.Transactions
             List<Product> products = productFileManager.ReadProductsFromFile();
 
             ProductDisplay display = new ProductDisplay(productFileManager);
-
             display.DisplayProducts();
-            Console.WriteLine("\n        --- Varukorg ---");
-            Console.WriteLine("---------------------------------");
+
+            Console.SetCursorPosition(35, 2);
+            Console.WriteLine("----------------------------------------------------------------");
+            Console.SetCursorPosition(35, 3);
+            Console.WriteLine("PRODUKT                  Mängd                        Pris");
+
+            Console.SetCursorPosition(35, 4);
+            Console.WriteLine("----------------------------------------------------------------");
+
 
             decimal totalPrice = 0;
+            int unitPricePadding = 7;
+            int totalAmountPadding = 10;
+            int quantityPadding = 18;
+            int maxProductNameLength = 9;
 
-            int maxProductNameLength = 12;
+            int currentRow = 5;
 
             foreach (var item in soldProducts)
             {
@@ -132,13 +138,69 @@ namespace MyCashRegister.Transactions
                     ? item.Product.Name.Substring(0, maxProductNameLength - 3) + "..."
                     : item.Product.Name;
 
-                Console.WriteLine($"| {item.Quantity:F1} x {productName.PadRight(maxProductNameLength)} {item.Product.Price.ToString("F2").PadLeft(8)} kr |");
-                totalPrice += item.Product.Price * item.Quantity;
+                decimal productTotalPrice = item.Quantity * item.Product.Price;
+
+                string quantity = item.Product.PriceType == PriceType.PerKilo
+                    ? $"{item.Quantity:F1} kg" 
+                    : $"{item.Quantity:F1} st" ;
+
+
+                Console.SetCursorPosition(35, currentRow);
+                Console.WriteLine($"| {productName.PadRight(maxProductNameLength)} " +
+                    $"{quantity.PadLeft(quantityPadding)} x " +
+                    $"{item.Product.Price.ToString("F2").PadLeft(unitPricePadding)} " +
+                    $"{(item.Product.PriceType == PriceType.PerKilo ? "kr/kg" : "kr/st").PadRight(6)} " +
+                    $"{productTotalPrice.ToString("F2").PadLeft(totalAmountPadding + 1)} kr |");
+                
+
+                totalPrice += productTotalPrice;
+                currentRow++;
             }
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine($"Summa: {totalPrice.ToString("F2").PadLeft(22)} kr");
-            Console.WriteLine("---------------------------------");
+
+            Console.SetCursorPosition(35, currentRow);
+            Console.WriteLine("----------------------------------------------------------------");
+
+            currentRow++;
+            Console.SetCursorPosition(35, currentRow);
+            Console.WriteLine($"Summa: {totalPrice.ToString("F2").PadLeft(52)} kr");
+
+            currentRow++;
+            Console.SetCursorPosition(35, currentRow);
+            Console.WriteLine("----------------------------------------------------------------");
         }
+
+
+        ////Fungerande currentchart (inte totalbelopp per produkt däremot)
+        //public void CurrentCart()
+        //{
+        //    ProductFileManager productFileManager = new ProductFileManager("../../../Files/products.txt");
+        //    List<Product> products = productFileManager.ReadProductsFromFile();
+
+        //    ProductDisplay display = new ProductDisplay(productFileManager);
+
+        //    display.DisplayProducts();
+        //    Console.WriteLine("\n        --- Varukorg ---");
+        //    Console.WriteLine("---------------------------------");
+
+        //    decimal totalPrice = 0;
+
+        //    int maxProductNameLength = 12;
+
+        //    foreach (var item in soldProducts)
+        //    {
+        //        string productName = item.Product.Name.Length > maxProductNameLength
+        //            ? item.Product.Name.Substring(0, maxProductNameLength - 3) + "..."
+        //            : item.Product.Name;
+
+        //        Console.WriteLine($"| {item.Quantity:F1} x {productName.PadRight(maxProductNameLength)} {item.Product.Price.ToString("F2").PadLeft(8)} kr |");
+        //        totalPrice += item.Product.Price * item.Quantity;
+        //    }
+        //    Console.WriteLine("---------------------------------");
+        //    Console.WriteLine($"Summa: {totalPrice.ToString("F2").PadLeft(22)} kr");
+        //    Console.WriteLine("---------------------------------");
+        //}
+
+
 
         //private void SaveReceipt()
         //{

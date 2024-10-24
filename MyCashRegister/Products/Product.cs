@@ -57,7 +57,7 @@ namespace MyCashRegister.Products
             string priceInput = (Console.ReadLine());
             if (InputValidator.Instance.ValidateDecimal(priceInput, out decimal price))
             {
-                Console.WriteLine("Priset måste vara ett positivt tal.");
+                Console.WriteLine("Priset måste vara ett decimaltal, ex 10,00.");
                 return;
             }
 
@@ -125,7 +125,9 @@ namespace MyCashRegister.Products
 
             if (productToEdit != null)
             {
-                Console.WriteLine($"Redigerar produkt: {productToEdit.Name}");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\nRedigerar produkt: {productToEdit.Name}");
+                Console.ResetColor();
 
                 Console.Write("Ange ett nytt namn eller lämna tomt för att behålla nuvarande namn: ");
                 string newName = Console.ReadLine();
@@ -134,7 +136,7 @@ namespace MyCashRegister.Products
                     productToEdit.Name = newName;
                 }
 
-                Console.Write("Ange ett nytt pris eller lämna tomt för att behålla tidigare pris: ");
+                Console.Write("Ange ett nytt pris eller lämna tomt för att behålla tidigare pris (Ange ett decimaltal ex 10.00): ");
                 string newPriceInput = Console.ReadLine();
                 if (!string.IsNullOrEmpty(newPriceInput) 
                     && decimal.TryParse(newPriceInput, out decimal newPrice))
@@ -152,9 +154,8 @@ namespace MyCashRegister.Products
                 {
                     productToEdit.PriceType = PriceType.PerKilo;
                 }
-                // tog bort 24/10 efter att ha lagt till product repository längst upp i metoden
-                //fileManager.SaveToFile("../../../Files/products.txt", Products);
-                Console.WriteLine("Produkten har uppdaterats.");
+                productFileManager.SaveToFile("../../../Files/products.txt", Products);
+                //Console.WriteLine("Produkten har uppdaterats.");
             }
             else
             {

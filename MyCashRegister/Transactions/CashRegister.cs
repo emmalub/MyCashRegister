@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using MyCashRegister.Menus;
 using MyCashRegister.Products;
 
 namespace MyCashRegister.Transactions
@@ -32,13 +33,25 @@ namespace MyCashRegister.Transactions
 
             while (true)
             {
+                int cartColumnPosition = 35; //nya för att testa snygg varukorg brevid lista
+
                 Console.WriteLine();
+                Console.SetCursorPosition(cartColumnPosition, 1); //nya för att testa snygg varukorg brevid lista
+                Console.ForegroundColor= ConsoleColor.Green;
                 Console.Write("Ange PLU-nummer och antal/mängd för att lägga till vara: ");
+                Console.ResetColor();
+
                 string input = Console.ReadLine();
 
                 if (input.ToLower() == "pay")
                 {
                     transaction.PrintReciept();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Återgår till huvudmenyn..\n");
+                    Console.ResetColor();
+                    Thread.Sleep(3000);
+                    MainMenu menu = new MainMenu();
+                    menu.Display();
                     break;
                 }
 
@@ -49,16 +62,21 @@ namespace MyCashRegister.Transactions
                     var product = _products.FirstOrDefault(p => p.PLU == plu);
                     if (product != null)
                     {
+                        //int cartColumnPosition = 50; //nya för att testa snygg varukorg brevid lista
+
                         transaction.AddProduct(product, quantity);
+                        Console.SetCursorPosition(cartColumnPosition, 1); //nya för att testa snygg varukorg brevid lista
                         Console.WriteLine($"Lagt till {quantity} x {product.Name} - {product.Price} kr.");
                     }
                     else
                     {
+                        Console.SetCursorPosition(0, 20);
                         Console.WriteLine("Produkten med angivet PLU-nummer hittades inte.");
                     }
                 }
                 else
                 {
+                    Console.SetCursorPosition(0, 20);
                     Console.WriteLine("Ogiltig inmatning, ange ett giltigt PLU-nummer eller 'pay' för att betala.");
                 }
             }
