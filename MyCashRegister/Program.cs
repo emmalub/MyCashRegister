@@ -13,7 +13,10 @@ namespace MyCashRegister
             List<Product> products = productFileManager.ReadProductsFromFile();
 
             MainMenu menu = new MainMenu();
+
+            Console.SetCursorPosition(35, 10); //nytt
             menu.Display();
+            Console.SetCursorPosition(35, 10); //nytt
         }
     }
 }

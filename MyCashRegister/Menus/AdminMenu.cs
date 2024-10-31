@@ -41,9 +41,9 @@ namespace MyCashRegister.Menus
                         break;
 
                     case "0":
+                        running = false;
                         MainMenu mainMenu = new MainMenu();
                         mainMenu.Display();
-                        running = false;
                         break;
 
                     default:

@@ -12,33 +12,37 @@ namespace MyCashRegister.Menus
     {
         public override void Display()
         {
+            bool running = true;
 
-            PrintHeader("~~ Välkommen ~~~");
-            Console.WriteLine($@"| 1. Ny kund                              |
+            while (running)
+            {
+                PrintHeader("~~ Välkommen ~~~");
+                Console.WriteLine($@"| 1. Ny kund                              |
 | 2. Admin-vy                             |
 | 0. Avsluta                              |
 +-----------------------------------------+
 ");
-            string input = GetUserInput();
+                string input = GetUserInput();
 
 
-            switch (input)
-            {
-                case "1":
-                   CashRegister register = new CashRegister();
-                    register.Start();
-                    break;
-                case "2":
-                    AdminMenu adminMenu = new AdminMenu();
-                    adminMenu.Display();
-                    break;
-                case "0":
-                    Console.WriteLine("Tack för idag!");
-                    break;
+                switch (input)
+                {
+                    case "1":
+                        CashRegister register = new CashRegister();
+                        register.Start();
+                        break;
+                    case "2":
+                        AdminMenu adminMenu = new AdminMenu();
+                        adminMenu.Display();
+                        break;
+                    case "0":
+                        Console.WriteLine("Tack för idag!");
+                        running = false;
+                        break;
 
-                default:
-                    InvalidInputMessage();
-                    break;
+                    default:
+                        break;
+                }
             }
         }
     }

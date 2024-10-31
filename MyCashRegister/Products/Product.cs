@@ -188,7 +188,7 @@ namespace MyCashRegister.Products
             Console.Write("Ange produktens namn: ");
             string name = Console.ReadLine().ToUpper().Trim();
 
-            Product productToRemove = Products.Find(p => p.Name.Equals(name));
+            var productToRemove = Products.Find(p => p.Name.Equals(name));
 
             if (productToRemove != null)
             {
@@ -207,20 +207,18 @@ namespace MyCashRegister.Products
         }
         public void Edit()
         {
-            //ProductFileManager fileManager = new ProductFileManager();
-
             ProductFileManager productFileManager = new ProductFileManager("../../../Files/products.txt");    
             
             List<Product> products = productFileManager.ReadProductsFromFile();
             
-            ProductDisplay display = new ProductDisplay(productFileManager);
+            var display = new ProductDisplay(productFileManager);
             display.DisplayProducts();
 
             Console.WriteLine("\n~~ Redigera produkt ~~");
             Console.Write("Ange produktens ID (PLU) för den produkt du vill redigera: ");
             int productID = int.Parse(Console.ReadLine());
 
-            Product productToEdit = Products.Find(p => p.PLU == productID);
+            var productToEdit = Products.Find(p => p.PLU == productID);
 
             if (productToEdit != null)
             {

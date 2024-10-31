@@ -11,9 +11,12 @@ namespace MyCashRegister.Menus
 {
     public abstract class Menu
     {
+      
         protected void PrintHeader(string title)
         {
             Console.Clear();
+
+            //int consoleWidth = Console.WindowWidth;
             Console.WriteLine($@"+-----------------------------------------+
 |          ~~~  Välkommen ~~~             |
 |                                         |
@@ -28,7 +31,7 @@ namespace MyCashRegister.Menus
 
         protected void InvalidInputMessage()
         {
-            Console.WriteLine("Ogiltigt val, försök igen: a");
+            Console.WriteLine("Ogiltigt val, försök igen: ");
         }
 
         public abstract void Display();
