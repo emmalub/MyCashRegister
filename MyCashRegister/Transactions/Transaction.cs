@@ -15,7 +15,8 @@ namespace MyCashRegister.Transactions
         public int ReceiptNumber { get; private set; }
         public decimal TotalAmount { get; set; }
         private List<Product> products;
-        private List<(Product Product, decimal Quantity)> soldProducts = new List<(Product, decimal)>();
+        private List<(Product Product, decimal Quantity)> 
+            soldProducts = new List<(Product, decimal)>();
 
         public Transaction(int receiptNumber)
         {
@@ -79,27 +80,35 @@ namespace MyCashRegister.Transactions
 --------------------------------------------------");
                 foreach (var item in soldProducts)
                 {
-                    string productName = item.Product.Name.PadRight(30);
-                    string totalPrice = (item.Product.Price * item.Quantity).ToString("F2").PadLeft(10);
+                    string productName = item.Product.Name
+                        .PadRight(30);
+                    string totalPrice = (item.Product.Price * item.Quantity)
+                        .ToString("F2").PadLeft(10);
+
                     string quantityInfo;
 
                     if (item.Product.PriceType == PriceType.PerKilo)
                     {
-                        quantityInfo = $"{item.Quantity:F2} kg x {item.Product.Price:F2} kr/kg".PadRight(40);
+                        quantityInfo = $"{item.Quantity:F2} kg x {item.Product.Price:F2} kr/kg"
+                            .PadRight(40);
                         
                     }
                     else
                     {
-                        quantityInfo = $"{item.Quantity:F0} st x {item.Product.Price:F2} kr/st".PadRight(40);
+                        quantityInfo = $"{item.Quantity:F0} st x {item.Product.Price:F2} kr/st"
+                            .PadRight(40);
                         
                     }
                     sw.WriteLine($"{productName} {totalPrice.PadLeft(19)}");
                     sw.WriteLine(quantityInfo);
                 }
                 sw.WriteLine("                                           -------");
-                sw.WriteLine($"Att betala: {TotalAmount.ToString("F2").PadLeft(38)}");
-                sw.WriteLine($"Kontant: {TotalAmount.ToString("F2").PadLeft(41)}");
-                sw.WriteLine($"Tillbaka: {TotalAmount.ToString("F2").PadLeft(40)}");
+                sw.WriteLine($"Att betala: {TotalAmount.ToString("F2")
+                    .PadLeft(38)}");
+                //sw.WriteLine($"Kontant: {TotalAmount.ToString("F2")
+                //    .PadLeft(41)}");
+                //sw.WriteLine($"Tillbaka: {TotalAmount.ToString("F2")
+                //    .PadLeft(40)}");
                 sw.WriteLine("--------------------------------------------------");
                 sw.WriteLine();
                 sw.Close();
@@ -146,11 +155,16 @@ namespace MyCashRegister.Transactions
 
 
                 Console.SetCursorPosition(35, currentRow);
-                Console.WriteLine($"| {productName.PadRight(maxProductNameLength)} " +
-                    $"{quantity.PadLeft(quantityPadding)} x " +
-                    $"{item.Product.Price.ToString("F2").PadLeft(unitPricePadding)} " +
-                    $"{(item.Product.PriceType == PriceType.PerKilo ? "kr/kg" : "kr/st").PadRight(6)} " +
-                    $"{productTotalPrice.ToString("F2").PadLeft(totalAmountPadding + 1)} kr |");
+                Console.WriteLine($"| {productName
+                    .PadRight(maxProductNameLength)} " +
+                    $"{quantity
+                    .PadLeft(quantityPadding)} x " +
+                    $"{item.Product.Price.ToString("F2")
+                    .PadLeft(unitPricePadding)} " +
+                    $"{(item.Product.PriceType == PriceType.PerKilo ? "kr/kg" : "kr/st")
+                    .PadRight(6)} " +
+                    $"{productTotalPrice.ToString("F2")
+                    .PadLeft(totalAmountPadding + 1)} kr |");
                 
 
                 totalPrice += productTotalPrice;
@@ -162,53 +176,12 @@ namespace MyCashRegister.Transactions
 
             currentRow++;
             Console.SetCursorPosition(35, currentRow);
-            Console.WriteLine($"Summa: {totalPrice.ToString("F2").PadLeft(52)} kr");
+            Console.WriteLine($"Summa: {totalPrice.ToString("F2")
+                .PadLeft(52)} kr");
 
             currentRow++;
             Console.SetCursorPosition(35, currentRow);
             Console.WriteLine("----------------------------------------------------------------");
         }
-
-
-        ////Fungerande currentchart (inte totalbelopp per produkt däremot)
-        //public void CurrentCart()
-        //{
-        //    ProductFileManager productFileManager = new ProductFileManager("../../../Files/products.txt");
-        //    List<Product> products = productFileManager.ReadProductsFromFile();
-
-        //    ProductDisplay display = new ProductDisplay(productFileManager);
-
-        //    display.DisplayProducts();
-        //    Console.WriteLine("\n        --- Varukorg ---");
-        //    Console.WriteLine("---------------------------------");
-
-        //    decimal totalPrice = 0;
-
-        //    int maxProductNameLength = 12;
-
-        //    foreach (var item in soldProducts)
-        //    {
-        //        string productName = item.Product.Name.Length > maxProductNameLength
-        //            ? item.Product.Name.Substring(0, maxProductNameLength - 3) + "..."
-        //            : item.Product.Name;
-
-        //        Console.WriteLine($"| {item.Quantity:F1} x {productName.PadRight(maxProductNameLength)} {item.Product.Price.ToString("F2").PadLeft(8)} kr |");
-        //        totalPrice += item.Product.Price * item.Quantity;
-        //    }
-        //    Console.WriteLine("---------------------------------");
-        //    Console.WriteLine($"Summa: {totalPrice.ToString("F2").PadLeft(22)} kr");
-        //    Console.WriteLine("---------------------------------");
-        //}
-
-
-
-        //private void SaveReceipt()
-        //{
-        //    string date = DateTime.Now.ToString("yyyyMMdd");
-        //    using (StreamWriter sw = new StreamWriter($"../../../Files/RECEIPT_{date}.txt");
-        //    {
-
-        //    }
-        //}
     }
 }

@@ -11,80 +11,20 @@ namespace MyCashRegister.Managers
     {
         private string filePath = "../../../Files/products.txt";
 
-        public void AddProduct()
-        {
-            Product product = new Product();
-            product.Add();
-
-            SaveProductToFile("../../../Files/products.txt", product);
-        }
         public void SaveProductToFile(string filePath, Product product)
         {
             try
             {
                 using (StreamWriter sw = new StreamWriter(filePath, true))
                 {
-                    sw.WriteLine($"{product.PLU};{product.Name.ToUpper()};{product.Price};{product.PriceType}");
+                    sw.WriteLine($"{product.PLU};{product.Name
+                        .ToUpper()};{product.Price};{product.PriceType}");
                 }
                 Console.WriteLine($"Produkten {product.Name} sparades till {filePath}.");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Fel vid sparande av produkten: {ex.Message}");
-            }
-            //_fileManager.SaveToFile(filePath, product);
-            //    Console.WriteLine();
-        }
-
-        //private List<Product> products = new List<Product>();
-        //private List<Campaign> campaigns = new List<Campaign>();
-
-        //public void SaveCampaignToFile(string filePath, Campaign editedCampaign)
-        //{
-        //    try
-        //    {
-        //        List<string> lines = File.ReadAllLines(filePath).ToList();
-        //        for (int i = 0; i < lines.Count; i++)
-        //        {
-        //            string[] parts = lines[i].Split(';');
-        //            if (parts[0].ToLower() == editedCampaign.Name.ToLower())
-        //            {
-        //                lines[i] = $"{editedCampaign.Name};{editedCampaign.Discount};{editedCampaign.StartDate};{editedCampaign.EndDate}";
-        //                break;
-        //            }
-        //        }
-        //        File.WriteAllLines(filePath, lines);
-        //        Console.WriteLine($"Kampanjen {editedCampaign.Name} har uppdaterats.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Något gick fel vid uppdateringen av kampanjen.{ex.Message}");
-        //    }
-        //}
-
-        public void ManageItem(IManageable item)
-        {
-            Console.Write("Vad vill du göra? ");
-            string choice = Console.ReadLine();
-
-            switch (choice)
-            {
-                case "1":
-                    item.Add();
-                    break;
-
-                case "2":
-                    item.Edit();
-                    break;
-
-                case "3":
-                    item.Remove();
-                    break;
-
-                default:
-                    Console.WriteLine("Ogiltigt val.");
-                    break;
-
             }
         }
 

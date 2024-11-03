@@ -23,8 +23,6 @@ namespace MyCashRegister.Transactions
             ProductFileManager productFileManager = new ProductFileManager(filePath);
             _products = productFileManager.LoadFromFile(filePath);
             _receiptNumber = 1;
-
-            
         }
 
         public void StartTransaction()
@@ -33,7 +31,12 @@ namespace MyCashRegister.Transactions
 
             while (true)
             {
-                int cartColumnPosition = 35; //nya för att testa snygg varukorg brevid lista
+                int cartColumnPosition = 35;
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.SetCursorPosition(0, 18);
+                Console.WriteLine("~Skriv PAY för att betala~");
+                Console.ResetColor();
 
                 Console.WriteLine();
                 Console.SetCursorPosition(cartColumnPosition, 1); //nya för att testa snygg varukorg brevid lista
@@ -47,9 +50,9 @@ namespace MyCashRegister.Transactions
                 {
                     transaction.PrintReciept();
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Återgår till huvudmenyn..\n");
+                    Console.WriteLine("Tryck ENTER för att återgå till huvudmenyn.");
                     Console.ResetColor();
-                    Thread.Sleep(3000);
+                    Console.ReadLine();
                     MainMenu menu = new MainMenu();
                     menu.Display();
                     break;
@@ -62,22 +65,22 @@ namespace MyCashRegister.Transactions
                     var product = _products.FirstOrDefault(p => p.PLU == plu);
                     if (product != null)
                     {
-                        //int cartColumnPosition = 50; //nya för att testa snygg varukorg brevid lista
-
                         transaction.AddProduct(product, quantity);
-                        Console.SetCursorPosition(cartColumnPosition, 1); //nya för att testa snygg varukorg brevid lista
+                        Console.SetCursorPosition(cartColumnPosition, 1);
                         Console.WriteLine($"Lagt till {quantity} x {product.Name} - {product.Price} kr.");
                     }
                     else
                     {
                         Console.SetCursorPosition(0, 20);
-                        Console.WriteLine("Produkten med angivet PLU-nummer hittades inte.");
+                        Console.WriteLine(
+                            "Produkten med angivet PLU-nummer hittades inte.");
                     }
                 }
                 else
                 {
                     Console.SetCursorPosition(0, 20);
-                    Console.WriteLine("Ogiltig inmatning, ange ett giltigt PLU-nummer eller 'pay' för att betala.");
+                    Console.WriteLine(
+                        "Ogiltig inmatning, ange ett giltigt PLU-nummer eller 'pay' för att betala.");
                 }
             }
         }
@@ -92,16 +95,10 @@ namespace MyCashRegister.Transactions
             display.DisplayProducts();
             StartTransaction();
         }
-    //public void SaveProducts()
-    //{
-    //    _productFileManager.SaveToFile("../../../Files/products.txt", _products);
-    //}
     }
 }
 
 
-//Transaction transaction = new Transaction(receiptNumber);
-//transaction.AddProduct(product, quantity);
-//    transaction.PrintReceipt();
+
 
 

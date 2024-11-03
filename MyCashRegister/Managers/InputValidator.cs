@@ -32,6 +32,8 @@ namespace MyCashRegister.Managers
         }
         public bool ValidateDecimal(string input, out decimal result)
         {
+            input = input.Replace('.',',');
+
             return decimal.TryParse(input, out result);
         }
         public bool ValidateInt(string input, out int result)

@@ -29,8 +29,8 @@ namespace MyCashRegister.Products
             foreach (var product in products)
             {
                 Console.WriteLine(
-                    $"| PLU: {product.PLU.ToString().PadRight(5)}| {product.Name.PadRight(10)} |");
-
+                    $"| PLU: {product.PLU
+                    .ToString().PadRight(5)}| {product.Name.PadRight(10)} |");
             }
             Console.WriteLine("--------------------------");
         }
