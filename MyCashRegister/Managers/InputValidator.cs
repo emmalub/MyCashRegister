@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace MyCashRegister.Managers
 {
     public class InputValidator
     {
-        private static InputValidator _instance;
+        private static InputValidator? _instance;
         public InputValidator()
         {
         }
@@ -43,9 +44,24 @@ namespace MyCashRegister.Managers
         }
         public static void InvalidInputMessage()
         {
-            Console.WriteLine("Ogiltig inmatning. Tryck på en valfri tangent för att fortsätta.");
+            Console.WriteLine("Ogiltig inmatning. \nTryck på en valfri tangent för att fortsätta.");
             Console.ReadLine();
         }
+        public static void IsPoop(string input)
+        {
+            if (input.ToLower() == "bajskorv")
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine(@"
+       .^.
+      ( _ )
+     ( ___ )
+");
+                Console.ResetColor();
+                Thread.Sleep(1500);
+            }
+        }
     }
+
 }
 

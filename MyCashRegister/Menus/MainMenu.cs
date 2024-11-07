@@ -44,6 +44,7 @@ namespace MyCashRegister.Menus
                         break;
 
                     default:
+                        InputValidator.IsPoop(input);
                         InputValidator.InvalidInputMessage();
                         break;
                 }

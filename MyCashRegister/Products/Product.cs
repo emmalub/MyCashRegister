@@ -89,7 +89,7 @@ namespace MyCashRegister.Products
             PriceType priceType;
             while (true)
             {
-                Console.Write("Ange om priset gäller per kilo eller styck (KG för kilo och ST för styck)");
+                Console.Write("Ange om priset gäller per kilo eller styck (KG för kilo och ST för styck): ");
                 string inputPriceType = Console.ReadLine().ToUpper();
 
                 if (inputPriceType == "KG")
@@ -111,7 +111,9 @@ namespace MyCashRegister.Products
             Product newProduct = new Product(productID, name, price, priceType);
             Products.Add(newProduct);
 
-            Console.WriteLine($"Produkt {name} har lagts till.");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nProdukt {name} har lagts till.");
+            Console.ResetColor();
             Console.WriteLine("Tryck ENTER för att återgå till menyn.");
             Console.ReadLine();
 
@@ -132,7 +134,7 @@ namespace MyCashRegister.Products
 
             while (true)
             {
-                Console.Write("Ange produktens namn: (eller skriv AVBRYT för att gå tillbaka.) ");
+                Console.Write("Ange produktens namn: (eller skriv AVBRYT för att gå tillbaka) ");
                 string name = Console.ReadLine().ToUpper().Trim();
 
                 if (name == "AVBRYT")
