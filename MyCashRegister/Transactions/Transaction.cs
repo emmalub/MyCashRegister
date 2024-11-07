@@ -49,11 +49,7 @@ namespace MyCashRegister.Transactions
             Console.Clear();
             CurrentCart();
         }
-        public decimal CalculateTotal()
-        {
-            return TotalAmount;
-        }
-
+      
         public void PrintReciept()
         {
             string date = DateTime.Now.ToString("yyyyMMdd");
@@ -74,7 +70,6 @@ namespace MyCashRegister.Transactions
                 sw.WriteLine("--------------------------------------------------");
                 sw.WriteLine($"Kvitto #{ReceiptNumber}");
                 sw.WriteLine($"Datum: {DateTime.Now}");
-                //sw.WriteLine($"Kassör: {user}");
                 sw.WriteLine(@"
                                              SEK
 --------------------------------------------------");
@@ -105,10 +100,6 @@ namespace MyCashRegister.Transactions
                 sw.WriteLine("                                           -------");
                 sw.WriteLine($"Att betala: {TotalAmount.ToString("F2")
                     .PadLeft(38)}");
-                //sw.WriteLine($"Kontant: {TotalAmount.ToString("F2")
-                //    .PadLeft(41)}");
-                //sw.WriteLine($"Tillbaka: {TotalAmount.ToString("F2")
-                //    .PadLeft(40)}");
                 sw.WriteLine("--------------------------------------------------");
                 sw.WriteLine();
                 sw.Close();

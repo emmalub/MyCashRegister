@@ -39,12 +39,12 @@ namespace MyCashRegister.Transactions
                 Console.ResetColor();
 
                 Console.WriteLine();
-                Console.SetCursorPosition(cartColumnPosition, 1); //nya för att testa snygg varukorg brevid lista
+                Console.SetCursorPosition(cartColumnPosition, 1);
                 Console.ForegroundColor= ConsoleColor.Green;
                 Console.Write("Ange PLU-nummer och antal/mängd för att lägga till vara: ");
                 Console.ResetColor();
 
-                string input = Console.ReadLine();
+                string input = Console.ReadLine().Replace('.',',');
 
                 if (input.ToLower() == "pay")
                 {

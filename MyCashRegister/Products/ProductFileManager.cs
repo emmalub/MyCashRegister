@@ -77,7 +77,6 @@ namespace MyCashRegister.Products
                             continue;
                         }
 
-                        //PriceType parsedPriceType = (PriceType)Enum.Parse(typeof(PriceType), priceType, true);
                         products.Add(new Product(plu, name, price, parsedPriceType));
                     }
                 }

@@ -11,8 +11,9 @@ namespace MyCashRegister.Managers
     public class InputValidator
     {
         private static InputValidator _instance;
-        private InputValidator()
-        { }
+        public InputValidator()
+        {
+        }
 
         public static InputValidator Instance
         {
@@ -32,7 +33,7 @@ namespace MyCashRegister.Managers
         }
         public bool ValidateDecimal(string input, out decimal result)
         {
-            input = input.Replace('.',',');
+            input = input.Replace('.', ',');
 
             return decimal.TryParse(input, out result);
         }
@@ -40,13 +41,10 @@ namespace MyCashRegister.Managers
         {
             return int.TryParse(input, out result);
         }
-        public bool ValidateDate(string input, out DateOnly result)
+        public static void InvalidInputMessage()
         {
-            return DateOnly.TryParse(input, out result);
-        }
-        public string InvalidInputMessage()
-        {
-            return "Ogiltig inmatning, försök igen.";
+            Console.WriteLine("Ogiltig inmatning. Tryck på en valfri tangent för att fortsätta.");
+            Console.ReadLine();
         }
     }
 }

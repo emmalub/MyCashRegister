@@ -1,4 +1,5 @@
-﻿using MyCashRegister.Products;
+﻿using MyCashRegister.Managers;
+using MyCashRegister.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace MyCashRegister.Menus
     {
         public override void Display()
         {
+            var validator = new InputValidator();
+
             bool running = true;
             while (running)
             {
@@ -47,7 +50,7 @@ namespace MyCashRegister.Menus
                         break;
 
                     default:
-                        InvalidInputMessage();
+                        InputValidator.InvalidInputMessage();
                         break;
                 }
             }
